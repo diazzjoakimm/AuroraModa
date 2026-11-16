@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurora Moda — Elegancia que perdura</title>
+  <meta name="description" content="Aurora Moda: moda elegante, piezas seleccionadas y atención personalizada.">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <!-- Favicon: el logo -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Tipografías: Cormorant Garamond (títulos), Jost (cuerpo), Great Vibes (firma "Aurora") -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <!-- Marca el documento como "con JS" antes de pintar (los elementos de reveal solo se ocultan si hay JS) -->
+  <script>document.documentElement.classList.add('js');</script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="is-loading">
+
+  <!-- =====================================================
+       SPRITE DE ICONOS (se reutilizan con <use href="#id">)
+       ===================================================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="icon-whatsapp" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20.5l1.3-4.2A8.5 8.5 0 1 1 8 19.3z"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .8c-1-.4-1.8-1.2-2.2-2.2l.8-1-1-2z"/></g></symbol>
+    <!-- Vincha (placeholder del catálogo) -->
+    <symbol id="icon-vincha" viewBox="0 0 200 120"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M14 100C14 38 60 14 100 14s86 24 86 86"/><path d="M26 100C26 48 64 27 100 27s74 21 74 73"/><path d="M14 100h12M174 100h12"/></g></symbol>
+    <symbol id="icon-instagram" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/></g>
+      <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor"/>
+    </symbol>
+    <symbol id="icon-tiktok" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M16.5 3c.3 2.4 1.9 4.2 4.5 4.4v3.1c-1.6 0-3-.5-4.5-1.4v6.3c0 3.5-2.8 6.1-6.2 6.1S4 19 4 15.6c0-3.4 2.8-6.1 6.3-5.9v3.2c-1.7-.3-3 .9-3 2.7 0 1.5 1.2 2.7 2.7 2.7 1.7 0 2.7-1.1 2.7-2.9V3h3.8z"/>
+    </symbol>
+    <symbol id="icon-lock" viewBox="0 0 24 24">
+      <g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="1.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></g>
+    </symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24">
+      <path d="M4 12h16M14 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24">
+      <path d="M5 5l14 14M19 5L5 19" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24">
+      <path d="M12 16V5m0 0L7.5 9.5M12 5l4.5 4.5M4 17v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+  </svg>
+
+  <!-- =====================================================
+       LOADER DE ENTRADA
+       ===================================================== -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <img class="loader__logo" src="logo.png" alt="">
+      <p class="loader__moda">Moda</p>
+      <div class="loader__bar"><i></i></div>
+      <p class="loader__count" id="loader-count">000</p>
+    </div>
+  </div>
+
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <!-- =====================================================
+       HEADER FIJO
+       Para usar tu logo en imagen: guarda el archivo como "logo.png" junto a este
+       index.html y reemplaza el contenido de <a class="brand"> por:
+       <img src="logo.png" alt="Aurora Moda" height="40">
+       ===================================================== -->
+  <header class="header" id="header">
+    <a class="brand" href="#inicio" aria-label="Aurora Moda — inicio">
+      <img class="brand__logo" src="logo.png" alt="">
+      <span class="brand__moda">Moda</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Navegación principal">
+      <a class="nav__link" href="#inicio" data-section="inicio"><span>Inicio</span></a>
+      <a class="nav__link" href="catalogo.html" data-section="catalogo"><span>Catálogo</span></a>
+      <a class="nav__link" href="#nosotros" data-section="nosotros"><span>Nosotros</span></a>
+      <a class="nav__link" href="#contacto" data-section="contacto"><span>Contacto</span></a>
+    </nav>
+
+    <div class="header__tools">
+      <button class="icon-btn icon-btn--round" id="admin-open" type="button" aria-label="Acceso a administración" title="Administración">
+        <svg class="icon" aria-hidden="true"><use href="#icon-lock"/></svg>
+      </button>
+      <button class="burger" id="burger" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav">
+        <span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+    <section class="hero" id="inicio">
+      <div class="hero__bg" aria-hidden="true">
+        <img class="hero__sign" id="hero-sign" src="logo.png" alt="">
+      </div>
+
+      <div class="hero__inner">
+        <p class="hero__eyebrow">Aurora Moda &nbsp;·&nbsp; Nueva colección</p>
+
+        <h1 class="hero__title">
+          <span class="line"><span>Elegancia</span></span>
+          <span class="line"><span><em>que perdura</em></span></span>
+        </h1>
+
+        <p class="hero__text">Piezas seleccionadas con una sola idea: que cada detalle hable por ti, sin levantar la voz.</p>
+
+        <div class="hero__actions">
+          <a class="btn btn--light" href="catalogo.html" data-magnetic><span>Ver catálogo</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+          <a class="btn btn--outline-light" href="catalogo.html#mayorista" data-magnetic><span>Catálogo mayorista</span></a>
+        </div>
+      </div>
+
+      <a class="hero__scroll" href="#nosotros" aria-label="Bajar">
+        <span>Desliza</span><i></i>
+      </a>
+    </section>
+
+    <!-- Cinta de texto en movimiento -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span>Elegancia</span><span>Exclusividad</span><span>Detalles</span><span>Aurora Moda</span><span>Distinción</span><span>Atemporal</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         SOBRE NOSOTROS
+         ===================================================== -->
+    <section class="section about" id="nosotros">
+      <div class="container about__grid">
+        <div class="about__text">
+          <p class="eyebrow eyebrow--light" data-reveal="fade">Sobre nosotros</p>
+          <h2 class="section__title" data-reveal data-delay="1">La elegancia está en <em>los detalles</em></h2>
+          <p data-reveal data-delay="2">Aurora Moda nace de una convicción simple: vestir bien es una forma silenciosa de expresarse. Seleccionamos cada pieza pensando en cortes limpios, materiales nobles y un estilo que no depende de las modas del momento.</p>
+          <p data-reveal data-delay="3">Creemos en el lujo discreto, en la atención personalizada y en que cada clienta merezca sentirse única al elegir lo que lleva puesto.</p>
+        </div>
+
+        <div class="about__frame" data-reveal="zoom">
+          <span class="about__corner about__corner--tl"></span><span class="about__corner about__corner--tr"></span>
+          <span class="about__corner about__corner--bl"></span><span class="about__corner about__corner--br"></span>
+          <img class="about__logo" src="logo.png" alt="">
+          <p class="about__moda">Moda</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================
+         CONTACTO
+         ===================================================== -->
+    <section class="section contact" id="contacto">
+      <div class="container contact__grid">
+        <div>
+          <p class="eyebrow" data-reveal="fade">Contacto</p>
+          <h2 class="section__title" data-reveal data-delay="1">Hablemos de <em>tu estilo</em></h2>
+          <p class="contact__lead" data-reveal data-delay="2">¿Consultas por una vincha, colores o disponibilidad? Escríbenos y te respondemos a la brevedad.</p>
+          <!-- Se completa desde CONFIG.socials en app.js -->
+          <ul class="channels" id="contact-channels" data-reveal data-delay="3"></ul>
+        </div>
+
+        <form class="contact__form" id="contact-form" novalidate data-reveal data-delay="2">
+          <div class="field">
+            <label for="contact-name">Nombre</label>
+            <input id="contact-name" type="text" autocomplete="name" maxlength="80" required>
+          </div>
+          <div class="field">
+            <label for="contact-reach">Correo o teléfono <small>(opcional)</small></label>
+            <input id="contact-reach" type="text" autocomplete="email" maxlength="120">
+          </div>
+          <div class="field">
+            <label for="contact-message">Mensaje</label>
+            <textarea id="contact-message" rows="4" maxlength="1000" required></textarea>
+          </div>
+          <p class="form-error" id="contact-error" role="alert"></p>
+          <button class="btn btn--dark" type="submit" data-magnetic><span>Enviar mensaje</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <img class="footer__logo" src="logo.png" alt="">
+        <p class="footer__moda">Moda</p>
+        <p class="footer__tag">Elegancia que perdura.</p>
+      </div>
+
+      <nav class="footer__nav" aria-label="Enlaces del pie">
+        <h4>Navegación</h4>
+        <a href="#inicio">Inicio</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="catalogo.html#mayorista">Mayorista</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <div class="footer__social">
+        <h4>Síguenos</h4>
+        <!--
+          REDES SOCIALES — se generan desde CONFIG.socials en app.js.
+          Ya están Instagram y TikTok. Para agregar otra red (Facebook, WhatsApp, Pinterest...)
+          solo completa su "url" en app.js: las que están vacías no se muestran.
+        -->
+        <ul class="socials" id="footer-socials"></ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom container">
+      <p>© <span id="year"></span> Aurora Moda. Todos los derechos reservados.</p>
+      <a href="#admin" id="footer-admin" class="footer__admin">Acceso administración</a>
+    </div>
+  </footer>
+
+  <noscript><p style="position:fixed;bottom:0;left:0;right:0;padding:1rem;background:#000;color:#fff;text-align:center;z-index:9999">Esta página necesita JavaScript para mostrarse correctamente.</p></noscript>
+
+  <!-- =====================================================
+       MODAL: DETALLE DE PRODUCTO
+       ===================================================== -->
+  <div class="modal" id="product-modal" role="dialog" aria-modal="true" aria-labelledby="product-title" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog modal__dialog--lg">
+      <button class="modal__close" type="button" data-close aria-label="Cerrar"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button>
+      <div class="product">
+        <div class="product__gallery">
+          <div class="product__main"><img id="product-main" alt=""></div>
+          <div class="product__thumbs" id="product-thumbs"></div>
+        </div>
+        <div class="product__info">
+          <p class="eyebrow">Aurora Moda</p>
+          <h2 class="modal__title" id="product-title"></h2>
+          <p class="product__price" id="product-price"></p>
+          <p class="product__desc" id="product-desc"></p>
+          <a class="btn btn--dark" id="product-inquire" href="#" target="_blank" rel="noopener"><span>Consultar por Instagram</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       MODAL: LOGIN DE ADMINISTRACIÓN
+       ===================================================== -->
+  <div class="modal" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-title" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog modal__dialog--sm">
+      <button class="modal__close" type="button" data-close aria-label="Cerrar"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button>
+      <img class="modal__logo" src="logo.png" alt="">
+      <p class="eyebrow">Acceso privado</p>
+      <h2 class="modal__title" id="login-title">Panel de administración</h2>
+      <p class="modal__hint" id="login-hint"></p>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-email">Correo</label>
+          <input id="login-email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="login-pass">Contraseña</label>
+          <input id="login-pass" type="password" autocomplete="current-password" required>
+        </div>
+        <div class="field" id="login-confirm-wrap" hidden>
+          <label for="login-confirm">Repetir contraseña</label>
+          <input id="login-confirm" type="password" autocomplete="new-password">
+        </div>
+        <p class="form-error" id="login-error" role="alert"></p>
+        <button class="btn btn--dark btn--block" type="submit"><span id="login-submit-label">Ingresar</span></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       MODAL: CAMBIAR CONTRASEÑA
+       ===================================================== -->
+  <div class="modal" id="password-modal" role="dialog" aria-modal="true" aria-labelledby="password-title" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog modal__dialog--sm">
+      <button class="modal__close" type="button" data-close aria-label="Cerrar"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button>
+      <p class="eyebrow">Seguridad</p>
+      <h2 class="modal__title" id="password-title">Cambiar contraseña</h2>
+      <form id="password-form" novalidate>
+        <div class="field"><label for="pw-current">Contraseña actual</label><input id="pw-current" type="password" autocomplete="current-password" required></div>
+        <div class="field"><label for="pw-new">Nueva contraseña <small>(mínimo 8)</small></label><input id="pw-new" type="password" autocomplete="new-password" required></div>
+        <div class="field"><label for="pw-confirm">Repetir nueva contraseña</label><input id="pw-confirm" type="password" autocomplete="new-password" required></div>
+        <p class="form-error" id="pw-error" role="alert"></p>
+        <button class="btn btn--dark btn--block" type="submit"><span>Guardar contraseña</span></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       MODAL: CONFIRMACIÓN (eliminar, importar...)
+       ===================================================== -->
+  <div class="modal" id="confirm-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-text" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__dialog modal__dialog--sm">
+      <h2 class="modal__title" id="confirm-title"></h2>
+      <p class="modal__hint" id="confirm-text"></p>
+      <div class="modal__actions">
+        <button class="btn btn--outline-dark" type="button" data-close><span>Cancelar</span></button>
+        <button class="btn btn--dark" type="button" id="confirm-ok"><span id="confirm-ok-label">Eliminar</span></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================
+       PANEL DE ADMINISTRACIÓN
+       ===================================================== -->
+  <section class="admin" id="admin" aria-labelledby="admin-title" aria-hidden="true">
+    <header class="admin__bar">
+      <div class="admin__brand">
+        <img class="brand__logo brand__logo--sm" src="logo.png" alt="">
+        <div>
+          <p class="admin__eyebrow">Aurora Moda</p>
+          <h2 id="admin-title">Panel de administración</h2>
+        </div>
+      </div>
+      <div class="admin__actions">
+        <button class="link-btn link-btn--light" type="button" id="admin-export">Exportar</button>
+        <label class="link-btn link-btn--light" for="admin-import-file">Importar</label>
+        <input type="file" id="admin-import-file" accept="application/json,.json" hidden>
+        <button class="link-btn link-btn--light" type="button" id="admin-password">Contraseña</button>
+        <button class="link-btn link-btn--light" type="button" id="admin-logout">Cerrar sesión</button>
+        <button class="icon-btn icon-btn--light" type="button" data-close aria-label="Cerrar panel"><svg class="icon" aria-hidden="true"><use href="#icon-close"/></svg></button>
+      </div>
+    </header>
+
+    <div class="admin__body">
+      <!-- Formulario: crear / editar -->
+      <form class="admin__form" id="post-form" novalidate>
+        <h3 id="form-title">Nueva publicación</h3>
+        <input type="hidden" id="post-id">
+
+        <div class="field">
+          <label for="post-title">Título</label>
+          <input id="post-title" type="text" maxlength="120" placeholder="Ej.: Vincha de seda negra" required>
+        </div>
+        <div class="field">
+          <label for="post-price">Precio (ARS)</label>
+          <input id="post-price" type="number" min="0" step="any" inputmode="decimal" placeholder="0" required>
+        </div>
+        <div class="field"><label for="post-line">Catálogo</label><select id="post-line"><option value="minorista">Minorista</option><option value="mayorista">Mayorista</option></select></div>
+        <div class="field" id="min-wrap" hidden><label for="post-min">Cantidad mínima <small>(unidades)</small></label><input id="post-min" type="number" min="1" step="1" inputmode="numeric" placeholder="12"></div>
+        <div class="field">
+          <label for="post-desc">Descripción</label>
+          <textarea id="post-desc" rows="5" maxlength="3000" placeholder="Materiales, talles, cuidados…"></textarea>
+        </div>
+
+        <div class="field">
+          <label id="drop-label">Fotos <small id="drop-count">0/8</small></label>
+          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-labelledby="drop-label">
+            <svg class="icon" aria-hidden="true"><use href="#icon-upload"/></svg>
+            <p><strong>Arrastra tus fotos</strong> o haz clic para elegirlas</p>
+            <small>La primera es la portada. Se optimizan automáticamente.</small>
+            <input type="file" id="post-files" accept="image/*" multiple hidden>
+          </div>
+          <div class="thumbs" id="thumbs"></div>
+        </div>
+
+        <p class="form-error" id="form-error" role="alert"></p>
+        <div class="admin__form-actions">
+          <button class="btn btn--dark" type="submit"><span id="form-submit-label">Publicar</span></button>
+          <button class="btn btn--outline-dark" type="button" id="form-cancel" hidden><span>Cancelar edición</span></button>
+        </div>
+      </form>
+
+      <!-- Listado de publicaciones -->
+      <div class="admin__list">
+        <div class="admin__list-head">
+          <h3>Publicaciones <span class="count" id="admin-count">0</span></h3>
+          <p class="meter__text" id="meter-text"></p>
+        </div>
+        <div class="meter" aria-hidden="true"><i id="meter-bar"></i></div>
+        <ul class="rows" id="admin-list"></ul>
+        <p class="admin__empty" id="admin-empty">Aún no hay publicaciones. Crea la primera desde el formulario.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Avisos -->
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <a class="wa-fab" href="https://wa.me/5491149754536?text=Hola%20Aurora!%20Quiero%20hacer%20una%20consulta" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp"><svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg></a>
+  <script src="app.js"></script>
+</body>
+</html>
